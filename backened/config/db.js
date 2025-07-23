@@ -4,10 +4,7 @@ require('dotenv').config();
 
 dbconnect=async()=>{
     try {
-        mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        mongoose.connect(process.env.MONGO_URI);
         console.log("Database connected successfully");
         
     } catch (error) {

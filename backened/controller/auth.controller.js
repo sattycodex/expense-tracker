@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 const { errorResponse, successResponse } = require('../utils/response');
-const { generateAccessToken } = require('../utils/generate-token');
+const { generateAccessToken ,generateRefreshToken} = require('../utils/generate-token');
+const Category = require('../models/category.model');
 
 exports.register = async (req, res) => {
    
@@ -12,8 +13,13 @@ exports.register = async (req, res) => {
         if (existingUser) errorResponse(res, 'User already exists', 'Registration failed', 400);
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username,email, password: hashedPassword });
+        const newUser = new User({ username,email, password: hashedPassword , refreshToken:''});
         await newUser.save();
+        const defaultCategory = new Category({
+          createBy: newUser._id,
+          name: 'General'
+        });
+        await defaultCategory.save();
         successResponse(res, { username, email }, 'User registered successfully');
         
     } catch (err) {
@@ -35,13 +41,14 @@ exports.login = async (req, res) => {
         user.refreshToken = refreshToken;
         await user.save();
 
-        res.cookie('refreshToken', refreshToken, {
+        await res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: false,
-            path: '/api/auth/refresh',
+            path: '/',
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
+        
         successResponse(res, { token:accessToken, user: { username: user.username, email: user.email } }, 'Login successful');
     } catch (err) {
         errorResponse(res, err, 'Login failed');
@@ -76,7 +83,7 @@ exports.logout = async (req, res) => {
       await user.save();
     }
 
-    res.clearCookie('refreshToken', { path: '/api/auth/refresh' });
+    res.clearCookie('refreshToken', { path: '/' });
     successResponse(res, null, 'Logged out successfully');
   } catch (err) {
     errorResponse(res, err, 'Logout failed', 403);
