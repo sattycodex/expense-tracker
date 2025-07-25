@@ -17,8 +17,7 @@ env:
   REGION: asia-south1
   ARTIFACT_REPO: app-images
   IMAGE_NAME: backend
-  REGISTRY: ${{ env.REGION }}-docker.pkg.dev
-
+  REGISTRY: asia-south1-docker.pkg.dev
   CLUSTER_NAME: your-gke-cluster
   CLUSTER_LOCATION: asia-south1-a
   NAMESPACE: default
@@ -47,13 +46,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Configure Docker
-        run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+        run: gcloud auth configure-docker $REGISTRY --quiet
 
       - name: Define image tag and uri
         id: vars
         run: |
           TAG=${GITHUB_SHA::7}
-          IMAGE_URI=${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_NAME }}
+          IMAGE_URI=${REGISTRY}/${PROJECT_ID}/${ARTIFACT_REPO}/${IMAGE_NAME}
           echo "sha_tag=$TAG" >> $GITHUB_OUTPUT
           echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
 
