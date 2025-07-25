@@ -1,0 +1,103 @@
+name: Build & Deploy to GKE
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "backend/**"
+      - ".github/workflows/build-and-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # Needed for Workload Identity Federation
+
+env:
+  PROJECT_ID: your-gcp-project-id
+  REGION: asia-south1
+  ARTIFACT_REPO: app-images
+  IMAGE_NAME: backend
+  REGISTRY: ${{ env.REGION }}-docker.pkg.dev
+
+  CLUSTER_NAME: your-gke-cluster
+  CLUSTER_LOCATION: asia-south1-a
+  NAMESPACE: default
+  DEPLOYMENT_NAME: backend
+  CONTAINER_NAME: backend
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    outputs:
+      image_tag: ${{ steps.vars.outputs.sha_tag }}
+      image_uri: ${{ steps.vars.outputs.image_uri }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/1234567890/locations/global/workloadIdentityPools/github/providers/my-provider
+          service_account: ci-deployer@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+
+      - name: Define image tag and uri
+        id: vars
+        run: |
+          TAG=${GITHUB_SHA::7}
+          IMAGE_URI=${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_NAME }}
+          echo "sha_tag=$TAG" >> $GITHUB_OUTPUT
+          echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          provenance: false
+          tags: |
+            ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
+            ${{ steps.vars.outputs.image_uri }}:latest
+          cache-from: type=registry,ref=${{ steps.vars.outputs.image_uri }}:buildcache
+          cache-to: type=registry,ref=${{ steps.vars.outputs.image_uri }}:buildcache,mode=max
+
+  deploy_to_gke:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/1234567890/locations/global/workloadIdentityPools/github/providers/my-provider
+          service_account: ci-deployer@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.CLUSTER_NAME }}
+          location: ${{ env.CLUSTER_LOCATION }}
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Rollout new image to GKE
+        run: |
+          FULL_IMAGE=${{ needs.build_and_push.outputs.image_uri }}:${{ needs.build_and_push.outputs.image_tag }}
+          echo "Deploying image $FULL_IMAGE"
+          kubectl -n ${{ env.NAMESPACE }} set image deployment/${{ env.DEPLOYMENT_NAME }} \
+            ${{ env.CONTAINER_NAME }}=$FULL_IMAGE
+
+      - name: Wait for rollout
+        run: |
+          kubectl -n ${{ env.NAMESPACE }} rollout status deployment/${{ env.DEPLOYMENT_NAME }} --timeout=180s
