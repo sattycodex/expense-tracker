@@ -1,0 +1,34 @@
+.navbar-wrapper{
+   width: 100%;
+    height: 80px;
+    background-color: #f9dbdb;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0px;
+}
+img{
+    width: 250px;
+    height: 100%;
+}
+.user-auth{
+    display: flex;
+    justify-content: space-evenly;
+    width: 200px;
+    align-items: center;
+}
+
+.user-auth a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+.user-auth a:hover{
+    color: #f6b6b6;
+}
+.error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 150px;
+    flex-direction: column;
+}

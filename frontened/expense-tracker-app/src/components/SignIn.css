@@ -1,0 +1,68 @@
+.sign-in-wrapper{
+    height: auto;
+    width: 400px;
+    margin: auto;
+    padding: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 10px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;   
+    margin-top: 100px;
+}
+.sign-in-wrapper h2{
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+.sign-in-wrapper form{
+    display: flex;
+    flex-direction: column;
+}
+.sign-in-wrapper form input{
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.sign-in-wrapper form button{
+    padding: 10px;
+    background-color: #f6b6b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.sign-in-wrapper form button:hover{
+    background-color: #ed9797;
+}
+.sign-in-wrapper .error-message{
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+.sign-in-wrapper .success-message{
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+}
+.sign-in-wrapper .link{
+    text-align: center;
+    margin-top: 15px;
+}
+.sign-in-wrapper .link a{
+    color: #007bff;
+    text-decoration: none;
+}
+.sign-in-wrapper .link a:hover{
+    text-decoration: underline;
+}   
+
+.sign-in-wrapper p{
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+.sign-in-wrapper p a{
+    color: #007bff;
+    text-decoration: none;
+}

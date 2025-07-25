@@ -1,0 +1,17 @@
+.left-side{
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)  !important;
+}
+.main-content{
+    height: 100%;
+    overflow: scroll;
+}
+.right-side{
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    overflow: scroll;
+}
+.dashboard-wrapper{
+    height: 90vh;  
+    overflow: hidden; 
+}

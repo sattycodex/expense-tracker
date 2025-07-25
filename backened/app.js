@@ -8,6 +8,7 @@ const categoryRoutes = require('./routes/category.routes');
 const transactionRoutes = require('./routes/transaction.routes');
 const cookieParser = require('cookie-parser');
 const authMiddleware = require('./middleware/auth.middleware');
+const demoRoutes = require('./routes/demo');
 
 app= express();
 app.use(cors());
@@ -20,6 +21,7 @@ app.use('/api/auth',authRoutes );
 app.use('/api/dashboard',authMiddleware, homeRoutes);
 app.use('/api/category',authMiddleware, categoryRoutes);
 app.use('/api/transaction',authMiddleware, transactionRoutes);
+app.use('',demoRoutes);
 
 dbConect();
 

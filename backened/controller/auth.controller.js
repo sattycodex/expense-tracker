@@ -31,9 +31,9 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
-        if (!user) return errorResponse(res, 'User not found', 'Login failed', 404);    
+        if (!user)errorResponse(res, 'User not found', 'Login failed');    
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) return errorResponse(res, 'Invalid password', 'Login failed', 401);   
+        if (!isPasswordValid) errorResponse(res, 'Invalid password', 'Login failed');   
 
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
@@ -60,7 +60,7 @@ exports.refreshToken = async (req, res) => {
   if (!token) errorResponse(res, 'No refresh token provided', 'Token refresh failed', 403);
 
   try {
-    const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const payload = await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
     const user = await User.findById(payload.id);
     if (!user || user.refreshToken !== token) errorResponse(res, 'Invalid refresh token', 'Token refresh failed', 403);
 
