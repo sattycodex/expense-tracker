@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import './leftBar.css';
+import './LeftBar.css';
 
 const LeftBar = () => {
   return (

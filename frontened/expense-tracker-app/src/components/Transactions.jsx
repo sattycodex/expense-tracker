@@ -1,6 +1,6 @@
 import DateRangePicker from "./DateRangePicker.jsx";
 import TransactionCards from "./TransactionCards";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 const Transactions=()=>{
     const transactions = [
