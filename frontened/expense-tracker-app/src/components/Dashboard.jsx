@@ -1,5 +1,5 @@
 import RightBar from "./RightBar";
-import './dashboard.css';
+//import './dashboard.css';
 import Transactions from "./Transactions";
 import LeftBar from "./LeftBar";
 import { isLoggedIn } from "../utils/auth";
