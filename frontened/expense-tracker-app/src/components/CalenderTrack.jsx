@@ -2,7 +2,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
-import './CalenderTrack.css';
+import './calenderTrack.css';
 
 
 const CalenderTrack=()=>{

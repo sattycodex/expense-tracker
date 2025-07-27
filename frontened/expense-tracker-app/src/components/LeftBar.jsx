@@ -1,13 +1,12 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Leftbar.css'; // We'll add styling here
+import './leftBar.css';
 
 const LeftBar = () => {
   return (
     <div className="sidebar d-flex flex-column justify-content-between p-3">
-      {/* Top - Profile & Navigation */}
+      
       <div>
-        {/* 🧭 Navigation */}
+       
         <ul className="nav flex-column">
           <li className="nav-item">
             <a href="#" className="nav-link text-dark">🏠 Dashboard</a>

@@ -1,6 +1,6 @@
 import RightBar from "./RightBar";
-import './Dashboard.css';
-import Transactions from "./transactions";
+import './dashboard.css';
+import Transactions from "./Transactions";
 import LeftBar from "./LeftBar";
 import { isLoggedIn } from "../utils/auth";
 import { useNavigate } from "react-router-dom";

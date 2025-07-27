@@ -1,4 +1,4 @@
-name: Build & Deploy to GKE
+name: Build & push image
 
 on:
   push:
@@ -16,7 +16,7 @@ env:
   PROJECT_ID: gcp-learning-tut
   REGION: us-central1
   ARTIFACT_REPO: expense-tracker
-  IMAGE_NAME: backend
+  IMAGE_NAME: frontened
   REGISTRY: us-central1-docker.pkg.dev
 
 jobs:
@@ -44,16 +44,6 @@ jobs:
       - name: Configure Docker
         run: gcloud auth configure-docker $REGISTRY --quiet
 
-      # - name: create docker images
-      #   run: |
-      #     docker build -t us-central1-docker.pkg.dev/gcp-learning-tut/expense-tracker/backened -f backened/Dockerfile .
-      #     docker images
-
-      # - name: push docker images to registry
-      #   run: |
-      #     docker push us-central1-docker.pkg.dev/gcp-learning-tut/expense-tracker/backened
-
-
       - name: Define image tag and uri
         id: vars
         run: |
@@ -64,22 +54,12 @@ jobs:
 
       - name: create docker images
         run: |
-          docker build -t  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} -f backened/Dockerfile .
+          docker build -t  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} -f frontened/Dockerfile .
           docker images
 
       - name: push docker images to registry
         run: |
           docker push  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
 
-      # - name: Build and Push Docker image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./backend
-      #     file: ./backend/Dockerfile
-      #     push: true
-      #     provenance: false
-      #     tags: |
-      #       ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
-      #       ${{ steps.vars.outputs.image_uri }}:latest
 
 

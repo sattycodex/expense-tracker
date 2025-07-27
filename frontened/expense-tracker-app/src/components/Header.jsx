@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './Header.css';
+import './header.css';
 import { isLoggedIn ,logout} from '../utils/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
