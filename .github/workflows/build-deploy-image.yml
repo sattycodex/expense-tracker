@@ -62,15 +62,24 @@ jobs:
           echo "sha_tag=$TAG" >> $GITHUB_OUTPUT
           echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          provenance: false
-          tags: |
-            ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
-            ${{ steps.vars.outputs.image_uri }}:latest
+      - name: create docker images
+        run: |
+          docker build -t  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} -f backened/Dockerfile .
+          docker images
+
+      - name: push docker images to registry
+        run: |
+          docker push  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
+
+      # - name: Build and Push Docker image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./backend
+      #     file: ./backend/Dockerfile
+      #     push: true
+      #     provenance: false
+      #     tags: |
+      #       ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
+      #       ${{ steps.vars.outputs.image_uri }}:latest
 
 
