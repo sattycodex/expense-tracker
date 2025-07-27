@@ -43,7 +43,7 @@ jobs:
 
       - name: create docker images
         run: |
-          docker build -t us-central1-docker.pkg.dev/gcp-learning-tut/expense-tracker/backened -f ./backened/Dockerfile 
+          docker build -t us-central1-docker.pkg.dev/gcp-learning-tut/expense-tracker/backened -f backened/Dockerfile .
           docker images
 
       - name: push docker images to registry
