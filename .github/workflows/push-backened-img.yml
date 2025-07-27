@@ -1,4 +1,4 @@
-name: Build & push image
+name: Build & push backened image
 
 on:
   push:
