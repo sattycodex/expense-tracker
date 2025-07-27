@@ -36,28 +36,38 @@ jobs:
         with:
           service_account_key: ${{ secrets.GCP_REGISTRY_IMAGE_PUSH }}
           project_id: ${{ env.PROJECT_ID }}
-          export_default_credentials: true
+          export_default_credentials: true  
 
       - name: Configure Docker
         run: gcloud auth configure-docker $REGISTRY --quiet
 
-      - name: Define image tag and uri
-        id: vars
+      - name: create docker images
         run: |
-          TAG=${GITHUB_SHA::7}
-          IMAGE_URI=${REGISTRY}/${PROJECT_ID}/${ARTIFACT_REPO}/${IMAGE_NAME}
-          echo "sha_tag=$TAG" >> $GITHUB_OUTPUT
-          echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
+          docker build -t us-central1-docker.pkg.dev/gcp-learning-tut/expense-tracker/backened -f ./backened/Dockerfile 
+          docker images
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          provenance: false
-          tags: |
-            ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
-            ${{ steps.vars.outputs.image_uri }}:latest
+      - name: push docker images to registry
+        run: |
+          docker push us-central1-docker.pkg.dev/gcp-learning-tut/expense-tracker/backened
+
+
+      # - name: Define image tag and uri
+      #   id: vars
+      #   run: |
+      #     TAG=${GITHUB_SHA::7}
+      #     IMAGE_URI=${REGISTRY}/${PROJECT_ID}/${ARTIFACT_REPO}/${IMAGE_NAME}
+      #     echo "sha_tag=$TAG" >> $GITHUB_OUTPUT
+      #     echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+      # - name: Build and Push Docker image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./backend
+      #     file: ./backend/Dockerfile
+      #     push: true
+      #     provenance: false
+      #     tags: |
+      #       ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
+      #       ${{ steps.vars.outputs.image_uri }}:latest
 
 
