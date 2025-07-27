@@ -54,7 +54,7 @@ jobs:
 
       - name: create docker images
         run: |
-          docker build -t  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} -f frontened/Dockerfile .
+          docker build -t  ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} -f frontened/expense-tracker-app//Dockerfile .
           docker images
 
       - name: push docker images to registry
