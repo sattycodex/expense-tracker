@@ -1,0 +1,170 @@
+
+.transaction-row {
+    display: flex;
+    align-items: center; /* Vertically center all items */
+    justify-content: space-between; /* Space out items evenly */
+    background-color: #ffffff; /* White background for each row */
+    border-radius: 8px; /* Slightly rounded corners for a softer look */
+    padding: 15px 20px;
+    margin-bottom: 10px; /* Space between rows */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    position: relative;
+    overflow: hidden; /* Hide anything that overflows, like hidden icons */
+}
+
+.transaction-details-primary {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* More space between icon and text */
+    flex-grow: 1; /* Allows this section to take up available space */
+}
+
+.transaction-icon {
+    font-size: 1.8em; /* Slightly smaller icon size for better balance */
+    color: #6c757d; /* Muted icon color */
+    min-width: 30px;
+    text-align: center;
+}
+
+.text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.transaction-description {
+    font-weight: 450; /* Slightly bolder */
+    font-size: 1em;
+    color: #343a40; /* Darker text for readability */
+    margin-bottom: 2px;
+    font-family: auto;
+}
+
+.transaction-date {
+    font-size: 0.85em;
+    color: #868e96; /* Lighter text for the date */
+}
+
+.transaction-amount {
+    font-weight: 600;
+    font-size: 1.05em;
+    color: #28a745; /* Green for positive amounts */
+    margin-left: auto; /* Pushes the amount to the right */
+    white-space: nowrap; /* Prevents amount from wrapping */
+}
+
+.transaction-amount-negative {
+    color: #dc3545; /* Red for negative amounts */
+}
+
+.transaction-actions {
+    display: flex;
+    gap: 8px; /* Space between icons */
+    margin-left: 20px; /* Space between amount and icons */
+    opacity: 0;
+    visibility: hidden; /* Hide completely when not hovered */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.transaction-row:hover .transaction-actions {
+    opacity: 1;
+    visibility: visible; /* Show on hover */
+}
+
+.edit-icon, .delete-icon {
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #6c757d; /* Muted icon color */
+    padding: 5px; /* Add padding to make icons easier to click */
+    border-radius: 4px; /* Slightly rounded for the hover effect */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.edit-icon:hover {
+    color: #0056b3; /* Darker blue on hover */
+    background-color: #e9ecef; /* Light background on hover */
+}
+
+.delete-icon:hover {
+    color: #c82333; /* Darker red on hover */
+    background-color: #e9ecef;
+}
+.transaction-status {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 0px 2px;
+    border-radius: 5px;
+    margin-right: 10px; /* Space between primary details and status */
+    white-space: nowrap; /* Prevents status text from wrapping */
+}
+
+/* Specific styling for each status */
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+button[type="submit"] {
+    background-color: #5555d6;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button[type="submit"]:hover {
+    background-color:#4a4ade;
+}
