@@ -26,14 +26,14 @@
 }
 .sign-in-wrapper form button{
     padding: 10px;
-    background-color: #f6b6b6;
+    background-color: #5555d6;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 .sign-in-wrapper form button:hover{
-    background-color: #ed9797;
+    background-color: #4a4ade;
 }
 .sign-in-wrapper .error-message{
     color: red;
@@ -65,4 +65,29 @@
 .sign-in-wrapper p a{
     color: #007bff;
     text-decoration: none;
+}
+
+.separator {
+    margin: 20px 0;
+    font-size: 0.9em;
+    color: #777;
+    position: relative;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.separator::before {
+    left: 0;
+}
+
+.separator::after {
+    right: 0;
 }

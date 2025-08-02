@@ -15,26 +15,9 @@ const Header=()=>{
 
     
     return (
-    <>
-        <div className="navbar-wrapper">
-            <img src="/app-logo.png" alt="app-logo" />
-            <div className='user-auth'>
-                {
-                    isLoggedInUser ? (
-                        <>
-                            <span onClick={handleLogout} style={{"cursor":'pointer',color:'black'}}>Logout</span>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/login" className='nav-link'>Login</Link>
-                            <Link to="/register" className='nav-link'>Register</Link>
-                        </>
-                    )
-                }
-               
-            </div>
-        </div>
-    </>
+    <header className="minimal-header">
+        <h1 className="logo"><Link to="/dashboard">Trackify</Link></h1>
+    </header>
     )  
 }
 export default Header;

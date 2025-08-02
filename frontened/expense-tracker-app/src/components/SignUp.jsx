@@ -35,7 +35,7 @@ const SignUp = () => {
         <div className='box'>
             <div className="sign-in-wrapper">
             <h2>Register</h2>
-            <form action={handleSubmit} method="post">  
+            <form action={handleSubmit}>  
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Username</Form.Label>
                         <Form.Control type="text" placeholder="Enter email" name='username' required />
@@ -54,6 +54,9 @@ const SignUp = () => {
                 
                 <p>Already have an account? <span onClick={handleLogin} style={{"cursor":'pointer',color:'blue'}}>Login</span></p>
             </form>
+
+            <div class="separator">OR</div>
+
         </div>
         </div>
         

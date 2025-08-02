@@ -6,7 +6,7 @@ import { isLoggedIn, saveToken } from '../utils/auth';
 import { useEffect } from 'react';
 import { showError, showSuccess } from '../utils/alert';
 
-
+"use server"
 const SignIn = () => {
     const navigate = useNavigate();
     useEffect(() => {
@@ -22,9 +22,9 @@ const SignIn = () => {
 
     const handleSubmit = async (event) => {
         const obj=Object.fromEntries(event.entries());
+        console.log(obj)
         try {
             const reponse=await axios.post('http://localhost:8080/api/auth/login', obj)
-            console.log(reponse)
             saveToken(reponse.data.data.token);
             showSuccess(reponse.data.message);
             navigate('/dashboard');
@@ -35,11 +35,14 @@ const SignIn = () => {
             
         }
     };
+    const handleGoogleSignin=()=>{
+        window.location.href = 'http://localhost:8080/auth/google';
+    }
     return (
         <div className='box'>
             <div className="sign-in-wrapper">
             <h2>Login</h2>
-            <form action={handleSubmit} method="post">        
+            <form action={handleSubmit}>        
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" name='email' required />
@@ -51,9 +54,11 @@ const SignIn = () => {
                     </Form.Group>
 
                     <button type="submit">Login</button>
+
                 
                 <p>Don't have an account? <span onClick={handleRegister} style={{"cursor":'pointer',color:'blue'}}>Register</span></p>
             </form>
+            <button onClick={handleGoogleSignin} style={{marginTop:'2px'}}>Sign in with google</button>
         </div>
         </div>
         

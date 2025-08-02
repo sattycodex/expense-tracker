@@ -1,4 +1,4 @@
-.navbar-wrapper{
+/* .navbar-wrapper{
    width: 100%;
     height: 80px;
     background-color: #f9dbdb;
@@ -31,4 +31,49 @@ img{
     align-items: center;
     margin-top: 150px;
     flex-direction: column;
+} */
+
+/* Basic Reset and Global Styles */
+/* Basic Reset and Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    /* Add enough height to the body to enable scrolling */
+}
+
+/* Header Styling */
+.minimal-header {
+    background-color:#5555d6;
+    border-bottom: 3px solid #7D4CDB; /* Stylish accent */
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick to the top of the viewport */
+    width: 100%; /* Ensure it spans the full width */
+    z-index: 1000; /* Ensure it stays above other content */
+    padding-top: 15px;
+}
+
+.logo {
+    font-size: 2em; /* Adjust font size as needed */
+    font-weight: bold;
+    color: #fff;
+    text-align: left;
+    padding: 5px 30px;
+}
+
+.logo a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.logo a:hover {
+    color: #7D4CDB; /* Hover color */
 }

@@ -12,6 +12,9 @@ import SignUp from './components/SignUp';
 import Dashboard from './components/Dashboard';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import OauthGoogle from './components/OauthGoogle';
+import Expense from './components/Expense';
+import Income from './components/Income';
 
 
 
@@ -34,6 +37,18 @@ function App() {
         path: "/dashboard",
         element: <Dashboard/>,
       },
+      {
+        path:"/oauth-google",
+        element:<OauthGoogle/>
+      },
+      {
+        path:"/expense",
+        element:<Expense/>
+      },
+      {
+        path:"/income",
+        element:<Income/>
+      }
     ],
   },
 ]);

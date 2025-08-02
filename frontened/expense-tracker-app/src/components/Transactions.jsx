@@ -30,17 +30,19 @@ const Transactions=()=>{
     );
   });
 
+  const spanStyle={ 
+    display: 'inline-block',
+    marginTop: '15px',
+    padding: '10px 20px',
+    fontFamily: 'Georgia',
+    fontWeight: 'bolder',
+    width: '100%',
+    background:' #e8e2e2'
+  }
+
     return (
         <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-             <DateRangePicker/>
-             <div style={{marginTop:'25px'}}>
-                <Button  style={{marginRight:'15px', backgroundColor:'#f9dbdb',border:'none',outline:'none',color:'black'}}>Today</Button>
-                <Button style={{marginRight:'15px', backgroundColor:'#f9dbdb',border:'none',outline:'none',color:'black'}}>Week</Button>
-                <Button style={{marginRight:'15px', backgroundColor:'#f9dbdb',border:'none',outline:'none',color:'black'}}>Month</Button>
-                <Button style={{marginRight:'15px', backgroundColor:'#f9dbdb',border:'none',outline:'none',color:'black'}}>Quarter</Button>
-            </div>
-        </div>
+         <span style={spanStyle}>All Transactions </span>
         <TransactionCards transactions={transactions} />
         </div>
     );
