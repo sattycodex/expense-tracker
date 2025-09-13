@@ -29,6 +29,8 @@ The app is deployed on **Google Kubernetes Engine (GKE)** with automated **CI/CD
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/your-username/expense-tracker.git
+git clone https://github.com/sattycodex/expense-tracker.git
 cd expense-tracker
+add required environment variable
+install required dependencies
 
