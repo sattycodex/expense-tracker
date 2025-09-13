@@ -22,7 +22,6 @@ const SignIn = () => {
 
     const handleSubmit = async (event) => {
         const obj=Object.fromEntries(event.entries());
-        console.log(obj)
         try {
             const reponse=await axios.post('http://localhost:8080/api/auth/login', obj)
             saveToken(reponse.data.data.token);
@@ -31,8 +30,6 @@ const SignIn = () => {
             
         } catch (error) {
             showError(error.response?.data?.message || "Login failed. Please try again.");
-            console.error("Error during login:", error);
-            
         }
     };
     const handleGoogleSignin=()=>{

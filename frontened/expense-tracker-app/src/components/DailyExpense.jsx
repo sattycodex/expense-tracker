@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import moment from 'moment';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const formatCurrency = (amount) =>
@@ -11,28 +12,19 @@ const formatCurrency = (amount) =>
   }).format(amount);
 
 
-const DailyExpense = () => {
-    const data = [
-  { category: 'Food', amount: 200 },
-  { category: 'Transport', amount: 100 },
-  { category: 'Bills', amount: 250 },
-  { category: 'Entertainment', amount: 150 },
-  { category: 'Food', amount: 200 },
-  { category: 'Transport', amount: 100 },
-  { category: 'Bills', amount: 250 },
-  { category: 'Entertainment', amount: 150 },
-];
-
-
-  const labels = data.map((item) => item.category);
+const DailyExpense = ({completeTransaction,selectedDate}) => {
+  const data = completeTransaction
+  const labels = data.map((item) => item.description);
   const values = data.map((item) => item.amount);
-  const total = values.reduce((acc, val) => acc + val, 0);
+  const income = data.filter((item)=>item.type=='salary' && item.status=='completed').map((item) => item.amount).reduce((prev,curr)=>prev+curr,0);
+  const expense = data.filter((item)=>item.type=='expense' && item.status=='completed').map((item) => item.amount).reduce((prev,curr)=>prev+curr,0);
+  const total = income-expense;
 
   const generateRandomColors = (count) => {
     const colors = [];
     for (let i = 0; i < count; i++) {
         const hue = Math.floor(Math.random() * 360);
-        colors.push(`hsl(${hue}, 70%, 70%)`); // HSL for bright pastel colors
+        colors.push(`hsl(${hue}, 70%, 70%)`);
     }
     return colors;
     };
@@ -72,14 +64,19 @@ const DailyExpense = () => {
       },
     },
   };
-
+  useEffect(()=>console.log(selectedDate),[])
   return (
-    <div className="container mt-5 d-flex flex-column align-items-center">
+    <div className="mt-4 d-flex flex-column align-items-center">
       <div >
-        <h5 className="text-center mb-3">Transactions of Selected Date</h5>
+        <h5 className="text-center mb-3" style={{    fontSize: '16px',
+    fontFamily: 'Georgia',
+    fontWeight: 'bolder'}}>Completed transaction of <span style={{marginLeft:'5px',fontWeight:'300'}}>{moment(selectedDate).format('MMMM Do YYYY')}</span></h5>
         <Pie data={chartData} options={options} />
         <p className="text-center mt-3 fw-bold">
-          Total: {formatCurrency(total)}
+           <span>Income: {formatCurrency(income)}</span>
+           <span style={{display:'inline-block',marginLeft:'10px'}}>Expense: {formatCurrency(expense)}</span> 
+           <br/>
+            <span style={{color:total>=0 ?'green':'red'}}>Total: {formatCurrency(total)}</span>
         </p>
       </div>
     </div>

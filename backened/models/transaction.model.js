@@ -6,9 +6,14 @@ const TransactionSchema = new mongoose.Schema({
   description: { type: String },
   date: { type: Date, default: Date.now },
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-  direction: {
+  type: {
     type: String,
-    enum: ['given', 'taken'],
+    enum: ['salary', 'expense'],
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['cancelled', 'completed','pending'],
     required: true
   }
 }, { timestamps: true });

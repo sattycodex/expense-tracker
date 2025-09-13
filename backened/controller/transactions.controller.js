@@ -3,18 +3,11 @@ const Category = require('../models/category.model');
 const Transaction = require('../models/transaction.model');
 const {monthNumber}=require('../utils/month-number')
 exports.addTransaction = async (req, res) => {
-    let { amount, description, date, categoryId, direction } = req.body;
+    let { amount, description, date, status, type } = req.body;
     const userId = req.user.id;
-    if (!categoryId) {
-        const category=Category.find({'name': 'General', 'createBy': userId})
-        categoryId = category.id;
-    }
     
-    if (!amount || !description || !direction) {
+    if (!amount || !description || !status || !date || !type) {
         errorResponse(res, 'All fields are required', 'Validation failed', 400);
-    }
-    if(!date){
-        date = Date.now();
     }
     
     try {
@@ -22,8 +15,8 @@ exports.addTransaction = async (req, res) => {
         amount,
         description,
         date,
-        categoryId,
-        direction,
+        status,
+        type,
         userId
         });
     
@@ -37,7 +30,26 @@ exports.addTransaction = async (req, res) => {
 exports.getAllTransactions=async (req, res) => {
     const userId = req.user.id;
     try {
-        const transactions = await Transaction.find({ userId }).populate('categoryId', 'name');
+        const transactions = await Transaction.find({ userId }).sort({ date: -1 });;
+        successResponse(res, transactions, 'Transactions retrieved successfully', 200);
+    } catch (error) {
+        errorResponse(res, error.message, 'Failed to retrieve transactions', 500);
+    }
+}
+
+exports.getIncomeTransaction=async (req,res)=>{
+    const userId = req.user.id;
+    try {
+        const transactions = await Transaction.find({ userId,type:'salary' }).sort({ date: -1 });;
+        successResponse(res, transactions, 'Transactions retrieved successfully', 200);
+    } catch (error) {
+        errorResponse(res, error.message, 'Failed to retrieve transactions', 500);
+    }
+}
+exports.getExpenseTransaction=async (req,res)=>{
+    const userId = req.user.id;
+    try {
+        const transactions = await Transaction.find({ userId,type:'expense' }).sort({ date: -1 });;
         successResponse(res, transactions, 'Transactions retrieved successfully', 200);
     } catch (error) {
         errorResponse(res, error.message, 'Failed to retrieve transactions', 500);
@@ -46,7 +58,7 @@ exports.getAllTransactions=async (req, res) => {
 
 exports.updateTransaction = async (req, res) => {
     const { id } = req.params;
-    const { amount, description, date, categoryId, direction } = req.body;
+    const { amount, description, date, status, type } = req.body;
     const userId = req.user.id;     
     try {
         const transaction = await Transaction.findById(id);
@@ -61,8 +73,8 @@ exports.updateTransaction = async (req, res) => {
         transaction.amount = amount || transaction.amount;
         transaction.description = description || transaction.description;
         transaction.date = date || transaction.date;
-        transaction.categoryId = categoryId || transaction.categoryId;
-        transaction.direction = direction || transaction.direction;
+        transaction.status = status || transaction.status;
+        transaction.type = type || transaction.type;
 
         await transaction.save();
         successResponse(res, transaction, 'Transaction updated successfully');
@@ -83,7 +95,7 @@ exports.deleteTransaction = async (req, res) => {
             return errorResponse(res, 'Unauthorized to delete this transaction', 'Delete failed', 403);
         }
 
-        await transaction.remove();
+        await transaction.deleteOne();
         successResponse(res, null, 'Transaction deleted successfully');
     } catch (error) {
         errorResponse(res, error.message, 'Failed to delete transaction', 500);
@@ -130,23 +142,19 @@ exports.getAllTransactionsInMonth = async (req, res) => {
     }
 }
 exports.getAllTransactionsInDay = async (req, res) => {
-    console.log(req.query);
     const { year, month, day } = req.query;
     const userId = req.user.id;
-
     try {
         const transactions = await Transaction.find({
             userId,
             date: {
-                $gte: new Date(`${Number(year)}-${monthNumber(month)}-${Number(day)}-00:00:00`),
-                $lt: new Date(`${Number(year)}-${monthNumber(month)}-${Number(day)}-23:59:59`)
+                $gte: new Date(`${Number(year)}-${Number(month)}-${Number(day)}-00:00:00`),
+                $lt: new Date(`${Number(year)}-${Number(month)}-${Number(day)}-23:59:59`)
             }
         });
-        if (transactions.length === 0) {
-            return errorResponse(res, 'No transactions found for this day', 'Retrieval failed', 404);
-        }
         successResponse(res, transactions, 'Transactions retrieved successfully', 200);
     } catch (error) {
+        console.log(error)
         errorResponse(res, error.message, 'Failed to retrieve transactions', 500);
     }
 }

@@ -21,13 +21,13 @@ const Dashboard = () => {
        
         <div className="container-fluid">
             <div className="row dashboard-wrapper">
-                <div className="col-2 left-side">
+                <div className="col-md-2 left-side">
                     <LeftBar/>
                 </div>
-                <div className="col-6 main-content">
+                <div className="col-md-6 main-content">
                    <Transactions />
                 </div>
-                <div className="col-4 right-side">
+                <div className="col-md-4 right-side">
                     <RightBar/>
                 </div>
             </div>

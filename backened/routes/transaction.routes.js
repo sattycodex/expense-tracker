@@ -2,13 +2,17 @@ const express=require('express');
 const { addTransaction,getAllTransactions,getTransactionsByCategory,updateTransaction ,deleteTransaction,
     getAllTransactionsInMonth, getAllTransactionsInYear, getAllTransactionsInWeek, getAllTransactionsInDay,
     getAllTransactionsInQuarter, getAllTransactionsInHalfYear, getAllTransactionsInRange,
-    getAllTransactionsByDirection
+    getAllTransactionsByDirection,
+    getIncomeTransaction,
+    getExpenseTransaction
 } = require('../controller/transactions.controller');
 const router=express.Router();
 
 router.post('/create-transaction', addTransaction);
-router.get('/list-transaction', getAllTransactions); // Assuming you want to list transactions as well
-router.get('/transactions/:categoryId', getTransactionsByCategory); // Assuming you want to filter by category
+router.get('/list-transaction', getAllTransactions); 
+router.get('/income-transaction',getIncomeTransaction);
+router.get('/expense-transaction',getExpenseTransaction);
+router.get('/transactions/:categoryId', getTransactionsByCategory); 
 router.put('/update-transaction/:id', updateTransaction);
 router.delete('/delete-transaction/:id', deleteTransaction);
 router.get('/list-transaction/month', getAllTransactionsInMonth);
